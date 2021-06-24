@@ -14,6 +14,7 @@ AProjectileBase::AProjectileBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
+	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectileBase::OnHit);
 	RootComponent = ProjectileMesh;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
@@ -26,4 +27,23 @@ AProjectileBase::AProjectileBase()
 void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
+}
+
+void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	AActor* FunctionOwner = GetOwner();
+
+	if (!FunctionOwner)
+	{
+		return;
+	}
+
+	if (OtherActor && OtherActor != this && OtherActor != FunctionOwner)
+	{
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, FunctionOwner->GetInstigatorController(), this, DamageType);
+	}
+
+	//TODO play effects
+
+	Destroy();
 }
