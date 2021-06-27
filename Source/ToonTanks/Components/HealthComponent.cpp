@@ -31,11 +31,12 @@ void UHealthComponent::TakeDamage(AActor* DamagedActor, float Damage, const UDam
 	if (Damage == 0 || Health <= 0)
 	{
 		//Just wondering how Da faq this will be called but safety first
-		UE_LOG(LogTemp, Error, TEXT("Shit got 0 health. Actor's name is %s"), *GetOwner()->GetName());
+		//UE_LOG(LogTemp, Error, TEXT("Shit got 0 health. Actor's name is %s"), *GetOwner()->GetName());
 		return;
 	}
 
 	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
+	//UE_LOG(LogTemp, Warning, TEXT("%s health is %f"), *GetOwner()->GetName(), Health);
 
 	if (Health <= 0)
 	{
