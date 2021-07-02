@@ -24,11 +24,20 @@ void APawnTank::BeginPlay()
 	PlayerControllerRef = Cast<APlayerController>(GetController());
 }
 
+bool APawnTank::GetbIsPlayerAlive()
+{
+	return bIsPlayerAlive;
+}
+
 void APawnTank::HandleDestruction()
 {
 	Super::HandleDestruction();
 
 	//Hide Player //TODO make it happen
+	bIsPlayerAlive = false;
+
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
 }
 
 // Called every frame

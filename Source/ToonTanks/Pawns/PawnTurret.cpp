@@ -23,6 +23,8 @@ void APawnTurret::HandleDestruction()
 {
 	//Call base pawn class to play effects
 	Super::HandleDestruction();
+
+	Destroy();
 }
 
 // Called every frame
@@ -43,7 +45,7 @@ void APawnTurret::Tick(float DeltaTime)
 void APawnTurret::CheckFireCondition()
 {
 	//If Player == null || is dead then IGNORE firing (just bail)
-	if (!PlayerPawn)
+	if (!PlayerPawn || !PlayerPawn->GetbIsPlayerAlive())
 	{
 		return;
 	}

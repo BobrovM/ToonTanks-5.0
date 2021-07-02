@@ -41,9 +41,7 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 	if (OtherActor && OtherActor != this && OtherActor != FunctionOwner)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, FunctionOwner->GetInstigatorController(), this, DamageType);
+		UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation());
+		Destroy();
 	}
-
-	//TODO play effects
-
-	Destroy();
 }
