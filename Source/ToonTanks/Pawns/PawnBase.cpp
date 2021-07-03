@@ -2,6 +2,7 @@
 
 
 #include "PawnBase.h"
+//#include "Camera/CameraShake.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ToonTanks/Actors/ProjectileBase.h"
@@ -55,8 +56,6 @@ void APawnBase::HandleDestruction()
 	//Handle destruction, make it blow or smth idk
 
 	UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticle, GetActorLocation());
-
-	//For turret just visual effects and then destroy self
-
-	//For player visuals and turn off||hide input component and firing ability
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(DeathShake);
 }

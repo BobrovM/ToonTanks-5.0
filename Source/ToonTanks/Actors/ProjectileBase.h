@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+//#include "Camera/CameraShakeBase.h"
 #include "GameFramework/Actor.h"
 #include "ProjectileBase.generated.h"
 
 class UProjectileMovementComponent;
+class UCameraShakeBase;
 
 UCLASS()
 class TOONTANKS_API AProjectileBase : public AActor
@@ -18,6 +20,8 @@ private:
 		UProjectileMovementComponent* ProjectileMovement;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 		UStaticMeshComponent* ProjectileMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+		UParticleSystemComponent* ParticleTrail;
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 		TSubclassOf<UDamageType> DamageType;
 
@@ -28,6 +32,12 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 		UParticleSystem* HitParticle;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		USoundBase* LaunchSound;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		USoundBase* HitSound;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		TSubclassOf<UCameraShakeBase> HitShake;
 
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, 

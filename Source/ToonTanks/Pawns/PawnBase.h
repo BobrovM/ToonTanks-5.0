@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+//#include "Camera/CameraShakeBase.h"
 #include "GameFramework/Pawn.h"
 #include "PawnBase.generated.h"
 
 class AProjectileBase;
 class UCapsuleComponent;
 class UHealthComponent;
+class UCameraShakeBase;
 
 UCLASS()
 class TOONTANKS_API APawnBase : public APawn
@@ -41,6 +43,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 		UParticleSystem* DeathParticle;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		USoundBase* DeathSound;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		TSubclassOf<UCameraShakeBase> DeathShake;
 
 protected:
 

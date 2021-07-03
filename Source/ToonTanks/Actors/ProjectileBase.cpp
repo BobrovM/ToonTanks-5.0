@@ -2,6 +2,7 @@
 
 
 #include "ProjectileBase.h"
+//#include "Camera/CameraShake.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -21,12 +22,17 @@ AProjectileBase::AProjectileBase()
 	ProjectileMovement->InitialSpeed = MovementSpeed;
 	ProjectileMovement->MaxSpeed = MovementSpeed;
 	InitialLifeSpan = 3.f;
+
+	ParticleTrail = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle Trail"));
+	ParticleTrail->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
 void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();	
+
+	UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
 }
 
 void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -42,6 +48,8 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, FunctionOwner->GetInstigatorController(), this, DamageType);
 		UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+		GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(HitShake);
 		Destroy();
 	}
 }
